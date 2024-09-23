@@ -101,8 +101,10 @@ void AXyuanTestCharacter::BeginPlay()
 		return;
 	}
 	
-	AbilityHud = CreateWidget<UAbilityHud>(GetWorld()->GetGameInstance(), AbilityHudClass);
-	AbilityHud->AddToViewport();
+	if (AbilityHud = CreateWidget<UAbilityHud>(GetWorld()->GetGameInstance(), AbilityHudClass); IsValid(AbilityHud))
+	{
+		AbilityHud->AddToViewport();
+	}
 }
 
 void AXyuanTestCharacter::Move(const FInputActionValue& Value)

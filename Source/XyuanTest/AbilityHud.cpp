@@ -4,14 +4,22 @@
 
 void UAbilityHud::AddAirPlatformSlot()
 {
-	if (nullptr == AirPlatformSlotsBox)
+	if (IsValid(AirPlatformSlotsBox) == false)
 	{
 		UE_LOG(LogTemp, Error, TEXT("'%s' AbilityHud needs to contain a Vertival Box called AirPlatformSlotsBox."), *GetNameSafe(this));
 		return;
 	}
 
-	auto AbilitySlot = CreateWidget(this, AirPlatformSlotClass);
-	AirPlatformSlotsBox->AddChildToVerticalBox(AbilitySlot);
+	if (IsValid(AirPlatformSlotClass) == false)
+	{
+		UE_LOG(LogTemp, Error, TEXT("'%s' AirPlatformSlotClass is not valid. Please assign a valid class to this variable."), *GetNameSafe(this));
+		return;
+	}
+
+	if (auto AbilitySlot = CreateWidget(this, AirPlatformSlotClass); IsValid(AbilitySlot))
+	{
+		AirPlatformSlotsBox->AddChildToVerticalBox(AbilitySlot);
+	}
 }
 
 void UAbilityHud::RemoveAirPlatformSlot()
