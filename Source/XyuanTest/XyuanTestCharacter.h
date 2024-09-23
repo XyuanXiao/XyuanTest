@@ -67,7 +67,7 @@ private:
 	bool bAirAbilityUsed = false;
 
 	/** Number of Air Platforms collected by the player */
-	int AirPlatformsCount = 0;
+	int AirPlatformCharges = 0;
 
 public:
 	AXyuanTestCharacter();

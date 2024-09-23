@@ -145,7 +145,8 @@ void AXyuanTestCharacter::Look(const FInputActionValue& Value)
 
 void AXyuanTestCharacter::AirPlatform()
 {
-	if (GetCharacterMovement()->IsFalling() && bAirAbilityUsed == false && AirPlatformsCount > 0)
+	// Air Platform ability can only be used once each time the player is in the air, and if the player collected charges for it
+	if (GetCharacterMovement()->IsFalling() && bAirAbilityUsed == false && AirPlatformCharges > 0)
 	{
 		bAirAbilityUsed = true;
 		UseAirPlatform();
@@ -157,6 +158,7 @@ void AXyuanTestCharacter::Landed(const FHitResult& Hit)
 {
 	Super::Landed(Hit);
 
+	// Once landed, the player can use the Air Platform ability again
 	bAirAbilityUsed = false;
 }
 
@@ -183,20 +185,20 @@ void AXyuanTestCharacter::PerformAirAbility()
 
 void AXyuanTestCharacter::CollectAirPlatform()
 {
-	AirPlatformsCount++;
+	AirPlatformCharges++;
 
 	if (IsValid(AbilityHud))
 	{
-		AbilityHud->AddAirPlatformSlot();
+		AbilityHud->AddAirPlatformSlot(); // Update ability charge count in the HUD
 	}
 }
 
 void AXyuanTestCharacter::UseAirPlatform()
 {
-	AirPlatformsCount--;
+	AirPlatformCharges--;
 	
 	if (IsValid(AbilityHud))
 	{
-		AbilityHud->RemoveAirPlatformSlot();
+		AbilityHud->RemoveAirPlatformSlot(); // Update ability charge count in the HUD
 	}
 }

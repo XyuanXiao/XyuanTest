@@ -35,7 +35,7 @@ void AAirPlatform::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if (IsValid(PlatformMesh))
 	{
-		PlatformMesh->OnComponentHit.RemoveAll(this);
+		PlatformMesh->OnComponentHit.RemoveAll(this); // Remove bindings on destruction
 	}
 
 	Super::EndPlay(EndPlayReason);
@@ -45,6 +45,7 @@ void AAirPlatform::StartFall()
 {
 	if (IsValid(PlatformMesh))
 	{
+		// Activate physics to start gravity fall and enable collection by the player
 		PlatformMesh->SetSimulatePhysics(true);
 		PlatformMesh->OnComponentHit.AddDynamic(this, &AAirPlatform::PlatformHit);
 	}
