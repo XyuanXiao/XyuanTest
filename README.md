@@ -3,6 +3,9 @@
 This is a simple project created by me (Xyuan Xiao), based on Epic Games' Third Person Smple project, with the purpose of showing my C++ and other game development skills for the Black Tower technical test.
 
 This project implements a new player ability, with an interatable object and required UI, and a quickly built level demonstration to test that new ability.
+
+Youtube link for a quick playtest of the project: https://youtu.be/sykoTB5bgm4
+
 ![image](https://github.com/user-attachments/assets/f8041692-259c-4090-8835-88a202c5fbb0)
 
 # Air Platform Ability (MOUSE LEFT CLICK)
