@@ -1,12 +1,13 @@
 # Overview
 
-This is a simple project created by me (Xyuan Xiao), based on Epic Games' Third Person Smple project, with the purpose of showing my C++ and other game development skills for the Black Tower technical test.
+This is a simple project created by me (Xyuan Xiao), based on Epic Games' Third Person Smple project, with the purpose of showing my C++ and BP skills for both gameplay and UI on UE5.
 
 This project implements a new player ability, with an interatable object and required UI, and a quickly built level demonstration to test that new ability.
+The player can also Pause (ENTER/ESC) the game with the options to "resume" or "restart".
 
-Youtube link for a quick playtest of the project: https://youtu.be/sykoTB5bgm4
+* Link to Youtube video showing a quick playtest of the project: [https://youtu.be/NzdE1FzgxVs](https://youtu.be/NzdE1FzgxVs)
 
-![image](https://github.com/user-attachments/assets/f8041692-259c-4090-8835-88a202c5fbb0)
+![image](https://github.com/user-attachments/assets/9f4ee40d-f191-4382-80d7-1609a842ceae)
 
 # Air Platform Ability (MOUSE LEFT CLICK)
 
@@ -18,20 +19,26 @@ The idea was to develop something that is more complex than a simple double jump
 
 # Implementation
 
-The implementation consists mostly on C++ programming over the files `XyuanTestCharacter.h/.cpp`, `AirPlatform.h/.cpp` and `AbilityHud.h/.cpp`.
+The gameplay implementation consists mostly of C++ programming over the files `XyuanTestCharacter.h/.cpp`, `AirPlatform.h/.cpp`, `AbilityHud.h/.cpp` and `PauseMenu.h/.cpp`.
 
 `XyuanTestCharacter.h/.cpp` has some default implementation from the Epic's Third Person Sample, but also includes my implementation for:
 - Ability input and triggering (restrictions like being in the air and having ability charges)
 - Spawning the Air Platform under the character
 - Ability HUD creation and control
+- Pause menu triggering
 
 `AirPlatform.h/.cpp` implements everything that happens to the Air Platform after it is spawned:
 - Staying static mid-air during a set period of time
 - Start falling using physics after that time
 - Collection by the player once it's not static anymore
 
-And finally, `AbilityHud.h/.cpp` deals with the HUD to show the player how many platforms is in the inventory by showing orange squares by the left of the screen:
+`AbilityHud.h/.cpp` deals with the HUD to show the player how many platforms is in the inventory by showing orange squares by the left of the screen:
 ![image](https://github.com/user-attachments/assets/63e1b9c4-468d-4294-80ec-4f2dd0b0b40b)
+
+And finally, `PauseMenu.h/.cpp` implements the pause options "Resume" (unpause and dismiss menu) and "Restart" (reset the game).
+![image](https://github.com/user-attachments/assets/19d6fee4-1433-404f-8d8c-b39636009477)
+
+# Final Considerations
 
 All C++ classes where created following Epic's recommended code standards. Header files are organized by properties first and then methods, ordered by public, protected and private.
 I tried including as many comments as necessary, and logs in case of errors. Unbinding of delegates on object destruction were also applied for safety.
@@ -48,9 +55,12 @@ The main unreal engine assets created/modified for this test are:
 - *Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset* (created to inherit my `XyuanTestCharacter` C++ class)
 - *Content/ThirdPerson/Blueprints/BP_AirPlatform.uasset* (created to inherit my `AirPlatform` C++ class)
 - *Content/ThirdPerson/Blueprints/WBP_PlayerAbilityHUD.uasset* (created to inherit my `AbilityHud` C++ class)
-- *Content/ThirdPerson/Blueprints/WBP_AirPlatformSlot.uasset* (created square widget, didn't need programming)
+- *Content/ThirdPerson/Blueprints/WBP_AirPlatformSlot.uasset* (created square widget, with animation to simulate collection of 3D cube into 2D icon)
+- *Content/ThirdPerson/Blueprints/WBP_PauseMenu.uasset* (created to inherit my `PauseMenu` C++ class, with some visual design implementation)
+- *Content/ThirdPerson/Blueprints/WBP_PauseOption.uasset* (created button widget, to be used for each pause menu widget option)
 - *Content/ThirdPerson/Input/IMC_Default.uasset* (modified to include the Mouse Left Click input for my new ability)
 - *Content/ThirdPerson/Input/Actions/IA_AirPlatform.uasset* (created input action for the new ability)
+- *Content/ThirdPerson/Input/Actions/IA_Pause.uasset* (created input action for the pause menu)
 - *Content/ThirdPerson/Maps/ThirdPersonMap.umap* (modified to demonstrate a simple case of a puzzle using my new Air Platform ability, with multiple solutions)
 
 Thanks for your time and I hope you enjoy my quickly created prototype!
