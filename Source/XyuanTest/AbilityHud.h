@@ -21,7 +21,7 @@ protected:
 	UPROPERTY(BlueprintReadWrite, meta = (BindWidget))
 	UVerticalBox* AirPlatformSlotsBox = nullptr;
 
-	/** WIdget class that will put as slot for the player's Air Platform charges */
+	/** Widget class that will put as slot for the player's Air Platform charges */
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> AirPlatformSlotClass = UUserWidget::StaticClass();
 
@@ -29,6 +29,6 @@ public:
 	// Show new charge slot at the left of the HUD
 	void AddAirPlatformSlot();
 
-	// Remove chareg slot from the HUD
-	void RemoveAirPlatformSlot();
+	// Remove charge slot from the HUD
+	void RemoveAirPlatformSlot() const;
 };

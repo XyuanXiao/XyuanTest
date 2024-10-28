@@ -6,7 +6,7 @@ void UAbilityHud::AddAirPlatformSlot()
 {
 	if (IsValid(AirPlatformSlotsBox) == false)
 	{
-		UE_LOG(LogTemp, Error, TEXT("'%s' AbilityHud needs to contain a Vertival Box called AirPlatformSlotsBox."), *GetNameSafe(this));
+		UE_LOG(LogTemp, Error, TEXT("'%s' AbilityHud needs to contain a Vertical Box called AirPlatformSlotsBox."), *GetNameSafe(this));
 		return;
 	}
 
@@ -16,17 +16,17 @@ void UAbilityHud::AddAirPlatformSlot()
 		return;
 	}
 
-	if (auto AbilitySlot = CreateWidget(this, AirPlatformSlotClass); IsValid(AbilitySlot))
+	if (const auto AbilitySlot = CreateWidget(this, AirPlatformSlotClass); IsValid(AbilitySlot))
 	{
 		AirPlatformSlotsBox->AddChildToVerticalBox(AbilitySlot);
 	}
 }
 
-void UAbilityHud::RemoveAirPlatformSlot()
+void UAbilityHud::RemoveAirPlatformSlot() const
 {
 	if (nullptr == AirPlatformSlotsBox)
 	{
-		UE_LOG(LogTemp, Error, TEXT("'%s' AbilityHud needs to contain a Vertival Box called AirPlatformSlotsBox."), *GetNameSafe(this));
+		UE_LOG(LogTemp, Error, TEXT("'%s' AbilityHud needs to contain a Vertical Box called AirPlatformSlotsBox."), *GetNameSafe(this));
 		return;
 	}
 

@@ -7,6 +7,7 @@
 #include "Logging/LogMacros.h"
 #include "AirPlatform.h"
 #include "AbilityHud.h"
+#include "PauseMenu.h"
 #include "XyuanTestCharacter.generated.h"
 
 class USpringArmComponent;
@@ -50,17 +51,30 @@ public:
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
+	
+	/** Pause Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* PauseAction;
 
 protected:
 	// Air Platform Class to spawn
 	UPROPERTY(EditDefaultsOnly, Category = Abilities)
 	TSubclassOf<AAirPlatform> AirPlatformClass = AAirPlatform::StaticClass();
 
+	// Air Platform spawn distance from root
+	UPROPERTY(EditDefaultsOnly, Category = Abilities)
+	float AirPlatformZ = 150;
+
 	// Ability HUD class
 	UPROPERTY(EditDefaultsOnly, Category = Abilities)
 	TSubclassOf<UAbilityHud> AbilityHudClass = UAbilityHud::StaticClass();
 
+	UPROPERTY()
 	UAbilityHud* AbilityHud = nullptr;
+
+	// Pause Menu class
+	UPROPERTY(EditDefaultsOnly, Category = Pause)
+	TSubclassOf<UPauseMenu> PauseMenuClass = UPauseMenu::StaticClass();
 
 private:
 	/** Air Ability can only be used once per jump/fall */
@@ -97,6 +111,9 @@ protected:
 	/** Called for air platform ability input*/
 	void AirPlatform();
 
+	/** Called for pause input */
+	void Pause();
+
 	/** Called for jump finish */
 	virtual void Landed(const FHitResult& Hit) override;
 
@@ -105,7 +122,7 @@ protected:
 
 private:
 	/** Triggers Air Ability */
-	void PerformAirAbility();
+	void PerformAirAbility() const;
 
 	/** Decreases the Air Platform inventory for the player */
 	void UseAirPlatform();

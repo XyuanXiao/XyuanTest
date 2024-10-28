@@ -11,6 +11,9 @@
 #include "EnhancedInputSubsystems.h"
 #include "InputActionValue.h"
 #include "AbilityHud.h"
+#include "AssetTypeCategories.h"
+#include "XyuanTestGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -61,7 +64,7 @@ AXyuanTestCharacter::AXyuanTestCharacter()
 void AXyuanTestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	// Add Input Mapping Context
-	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	if (const APlayerController* PlayerController = Cast<APlayerController>(GetController()))
 	{
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
@@ -84,6 +87,9 @@ void AXyuanTestCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 		// Looking
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AXyuanTestCharacter::Look);
+
+		// Pause Game
+		EnhancedInputComponent->BindAction(PauseAction, ETriggerEvent::Triggered, this, &AXyuanTestCharacter::Pause);
 	}
 	else
 	{
@@ -110,7 +116,7 @@ void AXyuanTestCharacter::BeginPlay()
 void AXyuanTestCharacter::Move(const FInputActionValue& Value)
 {
 	// input is a Vector2D
-	FVector2D MovementVector = Value.Get<FVector2D>();
+	const FVector2D MovementVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
@@ -133,7 +139,7 @@ void AXyuanTestCharacter::Move(const FInputActionValue& Value)
 void AXyuanTestCharacter::Look(const FInputActionValue& Value)
 {
 	// input is a Vector2D
-	FVector2D LookAxisVector = Value.Get<FVector2D>();
+	const FVector2D LookAxisVector = Value.Get<FVector2D>();
 
 	if (Controller != nullptr)
 	{
@@ -154,6 +160,30 @@ void AXyuanTestCharacter::AirPlatform()
 	}
 }
 
+void AXyuanTestCharacter::Pause()
+{
+	if (IsValid(GetWorld()) == false)
+	{
+		return;
+	}
+
+	if (APlayerController* PlayerController = Cast<APlayerController>(GetController()))
+	{
+		if (UPauseMenu* PauseMenuWidget = CreateWidget<UPauseMenu>(GetWorld()->GetGameInstance(), PauseMenuClass); IsValid(PauseMenuWidget))
+		{
+			PauseMenuWidget->AddToViewport();
+
+			FInputModeUIOnly InputModeUIOnly = FInputModeUIOnly();
+			InputModeUIOnly.SetLockMouseToViewportBehavior(EMouseLockMode::LockAlways);
+		
+			PlayerController->SetInputMode(InputModeUIOnly);
+			PlayerController->bShowMouseCursor = true;
+
+			UGameplayStatics::SetGamePaused(GetWorld(), true);
+		}
+	}
+}
+
 void AXyuanTestCharacter::Landed(const FHitResult& Hit)
 {
 	Super::Landed(Hit);
@@ -162,7 +192,7 @@ void AXyuanTestCharacter::Landed(const FHitResult& Hit)
 	bAirAbilityUsed = false;
 }
 
-void AXyuanTestCharacter::PerformAirAbility()
+void AXyuanTestCharacter::PerformAirAbility() const
 {
 	if (IsValid(AirPlatformClass) == false)
 	{
@@ -170,14 +200,13 @@ void AXyuanTestCharacter::PerformAirAbility()
 		return;
 	}
 
-	UWorld* World = GetWorld();
-	if (IsValid(World) == false)
+	if (IsValid(GetWorld()) == false)
 	{
 		return;
 	}
 
-	FVector PlatformLocation = GetActorLocation() - FVector(0, 0, 90.0f); // Location under the player
-	FTransform PlatformTransform (GetActorRotation(), PlatformLocation, FVector(1.0f, 1.0f, 1.0f));
+	const FVector PlatformLocation = GetActorLocation() - FVector(0, 0, AirPlatformZ); // Location under the player
+	const FTransform PlatformTransform (GetActorRotation(), PlatformLocation, FVector(1.0f, 1.0f, 1.0f));
 
 	// Spawn Air Platform at desired transform
 	AAirPlatform* AirPlatform = GetWorld()->SpawnActor<AAirPlatform>(AirPlatformClass, PlatformTransform);
