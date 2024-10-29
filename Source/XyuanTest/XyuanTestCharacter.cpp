@@ -107,7 +107,7 @@ void AXyuanTestCharacter::BeginPlay()
 		return;
 	}
 	
-	if (AbilityHud = CreateWidget<UAbilityHud>(GetWorld()->GetGameInstance(), AbilityHudClass); IsValid(AbilityHud))
+	if (UAbilityHud* AbilityHud = CreateWidget<UAbilityHud>(GetWorld()->GetGameInstance(), AbilityHudClass); IsValid(AbilityHud))
 	{
 		AbilityHud->AddToViewport();
 	}
@@ -215,19 +215,11 @@ void AXyuanTestCharacter::PerformAirAbility() const
 void AXyuanTestCharacter::CollectAirPlatform()
 {
 	AirPlatformCharges++;
-
-	if (IsValid(AbilityHud))
-	{
-		AbilityHud->AddAirPlatformSlot(); // Update ability charge count in the HUD
-	}
+	OnPlatformsAmountChanged.Broadcast(true);
 }
 
 void AXyuanTestCharacter::UseAirPlatform()
 {
 	AirPlatformCharges--;
-	
-	if (IsValid(AbilityHud))
-	{
-		AbilityHud->RemoveAirPlatformSlot(); // Update ability charge count in the HUD
-	}
+	OnPlatformsAmountChanged.Broadcast(false);
 }

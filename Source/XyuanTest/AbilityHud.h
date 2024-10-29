@@ -7,6 +7,18 @@
 #include "Logging/LogMacros.h"
 #include "AbilityHud.generated.h"
 
+USTRUCT(BlueprintType)
+struct FObjectiveInfo : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int PlatformsAmount;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ObjectiveDescription;
+};
+
 class UVerticalBox;
 /**
  * 
@@ -25,10 +37,24 @@ protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UUserWidget> AirPlatformSlotClass = UUserWidget::StaticClass();
 
-public:
+private:
+	int AirPlatformSlots = 0;
+	
+protected:
+	virtual void NativeOnInitialized() override;
+
+	virtual void NativeDestruct() override;
+
+	UFUNCTION()
+	void ChangePlatformSlots(bool AmountIncreased);
+
+	UFUNCTION(BlueprintImplementableEvent)
+	void ShowNewObjective(int PlatformsOwned);
+
+private:	
 	// Show new charge slot at the left of the HUD
 	void AddAirPlatformSlot();
 
 	// Remove charge slot from the HUD
-	void RemoveAirPlatformSlot() const;
+	void RemoveAirPlatformSlot();
 };

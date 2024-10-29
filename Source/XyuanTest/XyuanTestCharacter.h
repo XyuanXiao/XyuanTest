@@ -17,6 +17,7 @@ class UInputAction;
 struct FInputActionValue;
 
 DECLARE_LOG_CATEGORY_EXTERN(LogTemplateCharacter, Log, All);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnPlatformsAmountChanged, bool, AmountIncreased);
 
 UCLASS(config=Game)
 class AXyuanTestCharacter : public ACharacter
@@ -24,6 +25,9 @@ class AXyuanTestCharacter : public ACharacter
 	GENERATED_BODY()
 
 public:
+	UPROPERTY()
+	FOnPlatformsAmountChanged OnPlatformsAmountChanged;
+	
 	/** Camera boom positioning the camera behind the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* CameraBoom;
@@ -68,9 +72,6 @@ protected:
 	// Ability HUD class
 	UPROPERTY(EditDefaultsOnly, Category = Abilities)
 	TSubclassOf<UAbilityHud> AbilityHudClass = UAbilityHud::StaticClass();
-
-	UPROPERTY()
-	UAbilityHud* AbilityHud = nullptr;
 
 	// Pause Menu class
 	UPROPERTY(EditDefaultsOnly, Category = Pause)
