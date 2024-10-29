@@ -5,9 +5,10 @@ This is a simple project created by me (Xyuan Xiao), based on Epic Games' Third 
 This project implements a new player ability, with an interatable object and required UI, and a quickly built level demonstration to test that new ability.
 The player can also Pause (ENTER/ESC) the game with the options to "resume" or "restart".
 
-* Link to Youtube video showing a quick playtest of the project: [https://youtu.be/NzdE1FzgxVs](https://youtu.be/NzdE1FzgxVs)
+* Link to Youtube video showing a quick playtest of the project: [https://youtu.be/fJ0jPrLUp1E](https://youtu.be/fJ0jPrLUp1E)
 
-![image](https://github.com/user-attachments/assets/9f4ee40d-f191-4382-80d7-1609a842ceae)
+![image](https://github.com/user-attachments/assets/e967ec15-3039-4c18-a0ca-081e7ae70116)
+
 
 # Air Platform Ability (MOUSE LEFT CLICK)
 
@@ -32,11 +33,13 @@ The gameplay implementation consists mostly of C++ programming over the files `X
 - Start falling using physics after that time
 - Collection by the player once it's not static anymore
 
-`AbilityHud.h/.cpp` deals with the HUD to show the player how many platforms is in the inventory by showing orange squares by the left of the screen:
-![image](https://github.com/user-attachments/assets/63e1b9c4-468d-4294-80ec-4f2dd0b0b40b)
+`AbilityHud.h/.cpp` deals with the HUD to show the player how many platforms is in the inventory by showing orange squares by the left of the screen and also the current objective on the top-left:
+![image](https://github.com/user-attachments/assets/407ee850-2909-49eb-a635-b6acbc4dc058)
+
 
 And finally, `PauseMenu.h/.cpp` implements the pause options "Resume" (unpause and dismiss menu) and "Restart" (reset the game).
 ![image](https://github.com/user-attachments/assets/19d6fee4-1433-404f-8d8c-b39636009477)
+
 
 # Final Considerations
 
@@ -48,8 +51,10 @@ Worth mentioning that even though most of the implementation is done on code, it
 For instance, a designer can change how long it takes for the platforms to start falling by just adjusting the value `Delay To Fall` at *BP_AirPlatform*.
 ![image](https://github.com/user-attachments/assets/ab1bdc86-1769-4df0-8776-84bcdf65ed91)
 
+
 Or, to give a more drastic example, a designer could open *BP_ThirdPersonCharacter* and choose a different `Air Platform Class` to spawn another blueprint instead of the one I've set, or choose a different `Ability Hud Class` to experiment with a different HUD for the abilities.
 ![image](https://github.com/user-attachments/assets/7371b0e5-64a7-48b5-8c2f-9d8f59cb54f4)
+
 
 The main unreal engine assets created/modified for this test are:
 - *Content/ThirdPerson/Blueprints/BP_ThirdPersonCharacter.uasset* (created to inherit my `XyuanTestCharacter` C++ class)
